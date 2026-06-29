@@ -1,0 +1,55 @@
+# logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# dependencias
+node_modules/
+.pnpm-store/
+
+# build
+dist/
+dist-ssr/
+build/
+.vite/
+coverage/
+
+# entorno
+.env
+.env.*
+!.env.example
+*.local
+
+# editor / ide
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# typescript
+*.tsbuildinfo
+
+# docker
+.dockerignore
+docker-compose.override.yml
+
+# seguridad
+*.pem
+*.key
+
+# sistema
+Thumbs.db
+Desktop.ini
+
+# cache
+.cache/
+.tmp/
