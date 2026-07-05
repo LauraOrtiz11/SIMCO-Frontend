@@ -1,10 +1,10 @@
-
-
 function App() {
-  
   return (
- <div> <p>Hello, World!</p> </div>
-  )
+    <div>
+      {' '}
+      <p>Hello, World!</p>{' '}
+    </div>
+  );
 }
 
-export default App
+export default App;
