@@ -10,8 +10,8 @@ import type {
 export const getUsers = async (
   clientId?: string,
   page: number = 1,
-  limit: number = 10,
-): Promise<UserListItem[]> => {
+  limit: number = 5,
+): Promise<{ items: UserListItem[]; total: number }> => {
   const offset = (page - 1) * limit;
 
   const { data } = await api.get('/users/', {
@@ -22,10 +22,13 @@ export const getUsers = async (
     },
   });
 
-  return data.map((user: any) => ({
-    ...user,
-    is_active: user.status === 'Activo',
-  }));
+  return {
+    items: data.items.map((user: any) => ({
+      ...user,
+      is_active: user.status === 'Activo',
+    })),
+    total: data.total,
+  };
 };
 
 export const getUserById = async (id: string): Promise<UserDetail> => {

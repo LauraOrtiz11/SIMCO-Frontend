@@ -30,8 +30,10 @@ export const UsersPage = () => {
   const [clientFilter, setClientFilter] = useState<string>('');
   const [open, setOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserDetail | null>(null);
+  const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const limit = 5;
+  const totalPages = Math.ceil(total / limit);
   useEffect(() => {
     loadInitialData();
   }, []);
@@ -54,8 +56,15 @@ export const UsersPage = () => {
   const loadUsers = async () => {
     try {
       setLoading(true);
-      const data = await getUsers(clientFilter || undefined, page, limit);
-      setUsers(data);
+
+      const { items, total } = await getUsers(
+        clientFilter || undefined,
+        page,
+        limit,
+      );
+
+      setUsers(items);
+      setTotal(total);
     } finally {
       setLoading(false);
     }
@@ -158,17 +167,18 @@ export const UsersPage = () => {
           Anterior
         </button>
 
-        <span className="text-sm text-gray-600">Página {page}</span>
+        <span className="text-sm text-gray-600">
+          Página {page} de {totalPages}
+        </span>
 
         <button
-          onClick={() => setPage((p) => p + 1)}
-          disabled={users.length < limit}
+          onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+          disabled={page === totalPages}
           className="px-4 py-2 rounded-lg border text-sm disabled:opacity-50"
         >
           Siguiente
         </button>
       </div>
-
       {/* MODAL */}
       {open && (
         <UserFormModal

@@ -33,6 +33,7 @@ export const UserFormModal = ({
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // <- Estado de carga para el botón
 
   useEffect(() => {
     setForm({
@@ -54,21 +55,18 @@ export const UserFormModal = ({
   const validate = () => {
     const newErrors: Record<string, string> = {};
 
-    //  Nombre (mínimo 5 letras)
     if (!form.name) {
       newErrors.name = 'El nombre es obligatorio';
     } else if (form.name.trim().length < 5) {
       newErrors.name = 'Debe tener al menos 5 caracteres';
     }
 
-    //  Email (formato válido)
     if (!form.email) {
       newErrors.email = 'El email es obligatorio';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       newErrors.email = 'Correo inválido (ej: usuario@email.com)';
     }
 
-    //  Password (solo en create)
     if (!user) {
       if (!form.password) {
         newErrors.password = 'La contraseña es obligatoria';
@@ -81,13 +79,11 @@ export const UserFormModal = ({
       }
     }
 
-    //  Rol
     if (!form.id_role || form.id_role === 0) {
       newErrors.id_role = 'Selecciona un rol válido';
     }
 
-    //  Cliente UUID
-    if (form.id_client && !isUUID(form.id_client)) {
+    if (!form.id_client && !isUUID(form.id_client)) {
       newErrors.id_client = 'Cliente inválido';
     }
 
@@ -99,9 +95,12 @@ export const UserFormModal = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setErrors({});
     setServerError('');
 
     if (!validate()) return;
+
+    setIsSubmitting(true);
 
     try {
       if (user) {
@@ -124,14 +123,29 @@ export const UserFormModal = ({
 
         await onSubmit(payload);
       }
+
+      onClose();
     } catch (error: any) {
-      if (error?.response?.data?.detail) {
-        setServerError(error.response.data.detail);
-      } else if (error?.response?.data?.message) {
-        setServerError(error.response.data.message);
+      const errorData = error?.response?.data || error;
+
+      if (errorData?.detail?.field) {
+        const { field, message } = errorData.detail;
+
+        setErrors((prev) => ({
+          ...prev,
+          [field]: message,
+        }));
+
+        setServerError('');
       } else {
-        setServerError('Ocurrió un error inesperado');
+        setServerError(
+          errorData?.message ||
+            errorData?.detail ||
+            'Error al guardar el usuario',
+        );
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -154,7 +168,8 @@ export const UserFormModal = ({
 
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-xl"
+            disabled={isSubmitting}
+            className="text-gray-400 hover:text-gray-600 text-xl disabled:opacity-50"
           >
             ×
           </button>
@@ -174,8 +189,9 @@ export const UserFormModal = ({
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               placeholder="Nombre completo"
-              className={`w-full px-4 py-2.5 rounded-xl border text-sm
-              ${errors.name ? 'border-red-400' : 'border-gray-200'}`}
+              disabled={isSubmitting}
+              className={`w-full px-4 py-2.5 rounded-xl border text-sm disabled:bg-gray-50
+                ${errors.name ? 'border-red-400' : 'border-gray-200'}`}
             />
             {errors.name && (
               <p className="text-xs text-red-500 mt-1">{errors.name}</p>
@@ -188,8 +204,9 @@ export const UserFormModal = ({
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               placeholder="Correo electrónico"
-              className={`w-full px-4 py-2.5 rounded-xl border text-sm
-              ${errors.email ? 'border-red-400' : 'border-gray-200'}`}
+              disabled={isSubmitting}
+              className={`w-full px-4 py-2.5 rounded-xl border text-sm disabled:bg-gray-50
+                ${errors.email ? 'border-red-400' : 'border-gray-200'}`}
             />
             {errors.email && (
               <p className="text-xs text-red-500 mt-1">{errors.email}</p>
@@ -204,8 +221,9 @@ export const UserFormModal = ({
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 placeholder="Contraseña"
-                className={`w-full px-4 py-2.5 rounded-xl border text-sm
-                ${errors.password ? 'border-red-400' : 'border-gray-200'}`}
+                disabled={isSubmitting}
+                className={`w-full px-4 py-2.5 rounded-xl border text-sm disabled:bg-gray-50
+                  ${errors.password ? 'border-red-400' : 'border-gray-200'}`}
               />
               {errors.password && (
                 <p className="text-xs text-red-500 mt-1">{errors.password}</p>
@@ -217,7 +235,8 @@ export const UserFormModal = ({
           <select
             value={form.id_client}
             onChange={(e) => setForm({ ...form, id_client: e.target.value })}
-            className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"
+            disabled={isSubmitting}
+            className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm disabled:bg-gray-50"
           >
             <option value="">Seleccionar cliente</option>
             {clients.map((c) => (
@@ -237,8 +256,9 @@ export const UserFormModal = ({
                   id_role: Number(e.target.value),
                 })
               }
-              className={`w-full px-3 py-2.5 rounded-xl border text-sm
-              ${errors.id_role ? 'border-red-400' : 'border-gray-200'}`}
+              disabled={isSubmitting}
+              className={`w-full px-3 py-2.5 rounded-xl border text-sm disabled:bg-gray-50
+                ${errors.id_role ? 'border-red-400' : 'border-gray-200'}`}
             >
               <option value={0}>Seleccionar rol</option>
               {roles.map((r) => (
@@ -257,17 +277,26 @@ export const UserFormModal = ({
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
             <button
               type="button"
+              data-testid="cancel-button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl text-sm text-gray-600 bg-gray-100"
+              disabled={isSubmitting}
+              className="px-4 py-2 rounded-xl text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 transition disabled:opacity-50"
             >
               Cancelar
             </button>
 
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl text-sm text-white bg-green-600"
+              disabled={isSubmitting}
+              className="px-5 py-2 rounded-xl text-sm text-white bg-green-600 hover:bg-green-700 shadow-sm shadow-green-600/20 transition flex items-center justify-center min-w-32 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {user ? 'Guardar cambios' : 'Crear usuario'}
+              {isSubmitting ? (
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin inline-block"></span>
+              ) : user ? (
+                'Guardar cambios'
+              ) : (
+                'Crear usuario'
+              )}
             </button>
           </div>
         </form>
