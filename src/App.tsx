@@ -1,9 +1,12 @@
+import { Routes, Route, Navigate } from 'react-router-dom';
+import UsersPage from '@/features/users/pages/UsersPage';
+
 function App() {
   return (
-    <div>
-      {' '}
-      <p>Hello, World!</p>{' '}
-    </div>
+    <Routes>
+      <Route path="/" element={<Navigate to="/users" />} />
+      <Route path="/users" element={<UsersPage />} />
+    </Routes>
   );
 }
 
