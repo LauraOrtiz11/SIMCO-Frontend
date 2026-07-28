@@ -21,19 +21,19 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
 
   if (!users.length) {
     return (
-      <div className="bg-white rounded-xl shadow-sm p-10 text-center text-gray-500">
+      <div className="bg-white rounded-xl shadow-sm p-10 text-center text-gray-600">
         No hay usuarios registrados
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full min-w-200 text-sm">
           <thead>
-            <tr className="bg-gray-50 text-gray-500 border-b">
-              <th className="px-6 py-4 text-left">Usuario</th>
+            <tr className="bg-gray-100 text-gray-700 border-b border-green-800">
+              <th className="px-6 py-4 text-left">Nombre</th>
               <th className="px-6 py-4 text-left">Correo</th>
               <th className="px-6 py-4 text-left">Rol</th>
               <th className="px-6 py-4 text-left">Estado</th>
@@ -43,18 +43,17 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
 
           <tbody>
             {users.map((user) => {
-              // 🔥 SIEMPRE boolean seguro
               const isActive = Boolean(user.is_active);
 
               return (
                 <tr
                   key={user.id_user}
-                  className="border-b last:border-none hover:bg-gray-50 transition"
+                  className="border-b  border-green-800 last:border-none hover:bg-gray-100/50 transition"
                 >
                   {/* Usuario */}
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-semibold">
+                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-semibold">
                         {user.name.charAt(0).toUpperCase()}
                       </div>
 
@@ -71,7 +70,7 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
                   <td className="px-6 py-4 text-gray-600">{user.email}</td>
 
                   {/* Rol */}
-                  <td className="px-6 py-4">
+                  <td className="px-3 py-4">
                     <span className="px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-700">
                       {user.role}
                     </span>
@@ -92,7 +91,7 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
 
                   {/* Acciones */}
                   <td className="px-6 py-4">
-                    <div className="flex justify-center gap-2">
+                    <div className="flex flex-col gap-2 items-center">
                       {/* Editar */}
                       <button
                         onClick={() => onEdit(user)}

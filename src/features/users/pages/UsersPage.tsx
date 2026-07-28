@@ -9,11 +9,8 @@ import {
 } from '@/features/users/api/user.api';
 
 import { getClients } from '@/features/users/api/client.api';
-
 import { getRoles } from '@/features/users/api/role.api';
-
 import { UserTable } from '../components/UserTable';
-
 import { UserFormModal } from '../components/UserFormModal';
 
 import type {
@@ -27,19 +24,12 @@ import type {
 
 export const UsersPage = () => {
   const [users, setUsers] = useState<UserListItem[]>([]);
-
   const [clients, setClients] = useState<Client[]>([]);
-
   const [roles, setRoles] = useState<Role[]>([]);
-
   const [loading, setLoading] = useState(false);
-
   const [clientFilter, setClientFilter] = useState<string>('');
-
   const [open, setOpen] = useState(false);
-
   const [selectedUser, setSelectedUser] = useState<UserDetail | null>(null);
-
   const [page, setPage] = useState(1);
   const limit = 10;
   useEffect(() => {
@@ -119,7 +109,7 @@ export const UsersPage = () => {
   return (
     <div className="p-6 space-y-6">
       {/* TÍTULO */}
-      <h1 className="text-2xl font-semibold font-[Poppins]">Usuarios</h1>
+      <h1 className="text-2xl font-bold font-[Poppins]">Gestion de Usuarios</h1>
 
       {/* FILTRO + BOTÓN */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -130,7 +120,7 @@ export const UsersPage = () => {
             setClientFilter(e.target.value);
             setPage(1);
           }}
-          className="border px-3 py-2 rounded-lg text-sm w-full sm:w-auto"
+          className="w-full sm:w-auto px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400/20  transition-all duration-200 cursor-pointer"
         >
           <option value="">Todos</option>
           {clients.map((c) => (
@@ -146,9 +136,9 @@ export const UsersPage = () => {
             setSelectedUser(null);
             setOpen(true);
           }}
-          className="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 w-full sm:w-auto"
+          className="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 w-full sm:w-auto "
         >
-          Nuevo usuario
+          + Crear Usuario
         </button>
       </div>
 
