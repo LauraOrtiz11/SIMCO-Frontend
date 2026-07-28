@@ -151,7 +151,7 @@ export const UserFormModal = ({
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+      <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
         {/* HEADER */}
         <div className="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
           <div>
@@ -274,13 +274,13 @@ export const UserFormModal = ({
           </div>
 
           {/* FOOTER */}
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+          <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-2">
             <button
               type="button"
               data-testid="cancel-button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="px-4 py-2 rounded-xl text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 transition disabled:opacity-50"
+              className="px-3 py-2 rounded-xl text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-all disabled:opacity-50 cursor-pointer"
             >
               Cancelar
             </button>
@@ -288,7 +288,7 @@ export const UserFormModal = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-5 py-2 rounded-xl text-sm text-white bg-green-600 hover:bg-green-700 shadow-sm shadow-green-600/20 transition flex items-center justify-center min-w-32 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-2 rounded-xl text-sm font-semibold text-white bg-green-600 hover:bg-green-700 shadow-lg shadow-green-600/25 transition-all flex items-center justify-center min-w-32.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {isSubmitting ? (
                 <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin inline-block"></span>

@@ -33,11 +33,11 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
         <table className="w-full min-w-200 text-sm">
           <thead>
             <tr className="bg-gray-100 text-gray-700 border-b border-green-800">
-              <th className="px-6 py-4 text-left">Nombre</th>
-              <th className="px-6 py-4 text-left">Correo</th>
-              <th className="px-6 py-4 text-left">Rol</th>
-              <th className="px-6 py-4 text-left">Estado</th>
-              <th className="px-6 py-4 text-center">Acciones</th>
+              <th className="px-6 py-3 text-left">Nombre</th>
+              <th className="px-6 py-3 text-left">Correo</th>
+              <th className="px-6 py-3 text-left">Rol</th>
+              <th className="px-6 py-3 text-left">Estado</th>
+              <th className="px-6 py-3 text-center">Acciones</th>
             </tr>
           </thead>
 
@@ -51,7 +51,7 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
                   className="border-b  border-green-800 last:border-none hover:bg-gray-100/50 transition"
                 >
                   {/* Usuario */}
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-3">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-semibold">
                         {user.name.charAt(0).toUpperCase()}
@@ -67,17 +67,17 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
                   </td>
 
                   {/* Email */}
-                  <td className="px-6 py-4 text-gray-600">{user.email}</td>
+                  <td className="px-6 py-3 text-gray-600">{user.email}</td>
 
                   {/* Rol */}
-                  <td className="px-3 py-4">
+                  <td className="px-3 py-3">
                     <span className="px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-700">
                       {user.role}
                     </span>
                   </td>
 
                   {/* Estado */}
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-3">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-medium ${
                         isActive
@@ -90,12 +90,12 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
                   </td>
 
                   {/* Acciones */}
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-3">
                     <div className="flex flex-col gap-2 items-center">
                       {/* Editar */}
                       <button
                         onClick={() => onEdit(user)}
-                        className="px-3 py-1.5 rounded-lg text-sm text-blue-600 bg-blue-50 hover:bg-blue-100 transition"
+                        className="px-3 py-1 rounded-lg text-sm text-blue-600 bg-blue-50 hover:bg-blue-100 transition"
                       >
                         Editar
                       </button>
@@ -115,7 +115,7 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
                           }
                         }}
                         disabled={loadingId === user.id_user}
-                        className={`px-3 py-1.5 rounded-lg text-sm transition ${
+                        className={`px-3 py-1 rounded-lg text-sm transition ${
                           isActive
                             ? 'text-red-600 bg-red-50 hover:bg-red-100'
                             : 'text-green-600 bg-green-50 hover:bg-green-100'
@@ -126,7 +126,7 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
                         }`}
                       >
                         {loadingId === user.id_user ? (
-                          <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin inline-block"></span>
+                          <span className="w-4 h-3 border-2 border-current border-t-transparent rounded-full animate-spin inline-block"></span>
                         ) : isActive ? (
                           'Desactivar'
                         ) : (

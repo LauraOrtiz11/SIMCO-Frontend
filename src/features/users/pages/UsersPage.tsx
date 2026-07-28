@@ -145,7 +145,7 @@ export const UsersPage = () => {
             setSelectedUser(null);
             setOpen(true);
           }}
-          className="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 w-full sm:w-auto "
+          className="bg-green-600 text-white px-3 py-1 rounded-xl hover:bg-green-700 w-full sm:w-auto "
         >
           + Crear Usuario
         </button>
@@ -158,26 +158,88 @@ export const UsersPage = () => {
         onEdit={handleEdit}
         onToggle={handleToggle}
       />
-      <div className="flex justify-between items-center mt-4">
-        <button
-          onClick={() => setPage((p) => Math.max(p - 1, 1))}
-          disabled={page === 1}
-          className="px-4 py-2 rounded-lg border text-sm disabled:opacity-50"
-        >
-          Anterior
-        </button>
+      {/* PAGINACIÓN ALTERNATIVA */}
+      <div className="flex items-center justify-between px-4 py-3 sm:px-6 mt-4 bg-white rounded-xl ">
+        {/* Vista móvil / Texto simple */}
+        <div className="flex flex-1 justify-between sm:hidden">
+          <button
+            onClick={() => setPage((p) => Math.max(p - 1, 1))}
+            disabled={page === 1}
+            className="relative inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-40"
+          >
+            Anterior
+          </button>
+          <button
+            onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+            disabled={page === totalPages || totalPages === 0}
+            className="relative ml-3 inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-40"
+          >
+            Siguiente
+          </button>
+        </div>
 
-        <span className="text-sm text-gray-600">
-          Página {page} de {totalPages}
-        </span>
+        {/* Vista de escritorio / Completa */}
+        <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm text-gray-500">
+              Página {page} de {totalPages || 1}
+            </p>
+          </div>
 
-        <button
-          onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-          disabled={page === totalPages}
-          className="px-4 py-2 rounded-lg border text-sm disabled:opacity-50"
-        >
-          Siguiente
-        </button>
+          <div>
+            <nav
+              className="isolate inline-flex -space-x-px rounded-xl shadow-xs"
+              aria-label="Pagination"
+            >
+              {/* Botón Anterior */}
+              <button
+                onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                disabled={page === 1}
+                className="relative inline-flex items-center rounded-l-xl px-3 py-2 text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 focus:z-20 focus:outline-offset-0 disabled:opacity-20 disabled:cursor-not-allowed"
+              >
+                <span className="sr-only">Anterior</span>
+                <svg
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+
+              {/* Indicador de página actual centrado entre los botones */}
+              <span className="relative inline-flex items-center px-4 py-2 text-sm font-mono text-gray-600 ring-1 ring-inset ring-gray-200 bg-gray-50">
+                {page}
+              </span>
+
+              {/* Botón Siguiente */}
+              <button
+                onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+                disabled={page === totalPages || totalPages === 0}
+                className="relative inline-flex items-center rounded-r-xl px-3 py-2 text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 focus:z-20 focus:outline-offset-0 disabled:opacity-20 disabled:cursor-not-allowed"
+              >
+                <span className="sr-only">Siguiente</span>
+                <svg
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </nav>
+          </div>
+        </div>
       </div>
       {/* MODAL */}
       {open && (
