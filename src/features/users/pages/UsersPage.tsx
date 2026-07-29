@@ -118,10 +118,13 @@ export const UsersPage = () => {
   return (
     <div className="p-6 space-y-6">
       {/* TÍTULO */}
-      <h1 className="text-2xl font-bold font-[Poppins]">Gestion de Usuarios</h1>
-
+      <div className="pb-4 mt-2 border-b border-gray-300 ">
+        <h1 className="mb-2 text-xl justify-center font-semibold text-gray-800 font-[Poppins]">
+          Gestión de Usuarios
+        </h1>
+      </div>
       {/* FILTRO + BOTÓN */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         {/* Filtro izquierda */}
         <select
           value={clientFilter}
@@ -129,7 +132,7 @@ export const UsersPage = () => {
             setClientFilter(e.target.value);
             setPage(1);
           }}
-          className="w-full sm:w-auto px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400/20  transition-all duration-200 cursor-pointer"
+          className="w-full sm:w-auto px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400/20 transition-all duration-200 cursor-pointer"
         >
           <option value="">Todos</option>
           {clients.map((c) => (
@@ -145,7 +148,7 @@ export const UsersPage = () => {
             setSelectedUser(null);
             setOpen(true);
           }}
-          className="bg-green-600 text-white px-3 py-1 rounded-xl hover:bg-green-700 w-full sm:w-auto "
+          className="w-full sm:w-auto px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium shadow-sm transition-all duration-200 rounded-xl cursor-pointer flex items-center justify-center"
         >
           + Crear Usuario
         </button>
@@ -158,8 +161,8 @@ export const UsersPage = () => {
         onEdit={handleEdit}
         onToggle={handleToggle}
       />
-      {/* PAGINACIÓN ALTERNATIVA */}
-      <div className="flex items-center justify-between px-4 py-3 sm:px-6 mt-4 bg-white rounded-xl ">
+      {/* PAGINACIÓN  */}
+      <div className="flex items-center justify-between px-4 py-3 sm:px-6 mt-4  rounded-xl ">
         {/* Vista móvil / Texto simple */}
         <div className="flex flex-1 justify-between sm:hidden">
           <button

@@ -33,11 +33,11 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
         <table className="w-full min-w-200 text-sm">
           <thead>
             <tr className="bg-gray-100 text-gray-700 border-b border-green-800">
-              <th className="px-6 py-3 text-left">Nombre</th>
-              <th className="px-6 py-3 text-left">Correo</th>
-              <th className="px-6 py-3 text-left">Rol</th>
-              <th className="px-6 py-3 text-left">Estado</th>
-              <th className="px-6 py-3 text-center">Acciones</th>
+              <th className="px-6 py-2.5 text-left">Nombre</th>
+              <th className="px-6 py-2.5 text-left">Correo</th>
+              <th className="px-6 py-2.5 text-left">Rol</th>
+              <th className="px-6 py-2.5 text-left">Estado</th>
+              <th className="px-6 py-2.5 text-center">Acciones</th>
             </tr>
           </thead>
 
@@ -51,33 +51,30 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
                   className="border-b  border-green-800 last:border-none hover:bg-gray-100/50 transition"
                 >
                   {/* Usuario */}
-                  <td className="px-6 py-3">
+                  <td className="px-6 py-2.5">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-semibold">
+                      <div className="w-9 h-9 rounded-full bg-green-600 flex items-center justify-center text-white font-semibold">
                         {user.name.charAt(0).toUpperCase()}
                       </div>
 
                       <div>
                         <p className="font-medium text-gray-800">{user.name}</p>
-                        <p className="text-xs text-gray-400">
-                          ID: {user.id_user.slice(0, 8)}
-                        </p>
                       </div>
                     </div>
                   </td>
 
                   {/* Email */}
-                  <td className="px-6 py-3 text-gray-600">{user.email}</td>
+                  <td className="px-6 py-2.5 text-gray-600">{user.email}</td>
 
                   {/* Rol */}
-                  <td className="px-3 py-3">
+                  <td className="px-3 py-2.5">
                     <span className="px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-700">
                       {user.role}
                     </span>
                   </td>
 
                   {/* Estado */}
-                  <td className="px-6 py-3">
+                  <td className="px-6 py-2.5">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-medium ${
                         isActive
@@ -90,7 +87,7 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
                   </td>
 
                   {/* Acciones */}
-                  <td className="px-6 py-3">
+                  <td className="px-6 py-2.5">
                     <div className="flex flex-col gap-2 items-center">
                       {/* Editar */}
                       <button

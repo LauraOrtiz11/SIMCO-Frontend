@@ -232,20 +232,25 @@ export const UserFormModal = ({
           )}
 
           {/* Cliente */}
-          <select
-            value={form.id_client}
-            onChange={(e) => setForm({ ...form, id_client: e.target.value })}
-            disabled={isSubmitting}
-            className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm disabled:bg-gray-50"
-          >
-            <option value="">Seleccionar cliente</option>
-            {clients.map((c) => (
-              <option key={c.id_client} value={c.id_client}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-
+          <div>
+            <select
+              value={form.id_client}
+              onChange={(e) => setForm({ ...form, id_client: e.target.value })}
+              disabled={isSubmitting}
+              className={`w-full px-3 py-2.5 rounded-xl border text-sm disabled:bg-gray-50
+                ${errors.id_client ? 'border-red-400' : 'border-gray-200'}`}
+            >
+              <option value="">Seleccionar cliente</option>
+              {clients.map((c) => (
+                <option key={c.id_client} value={c.id_client}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            {errors.id_client && (
+              <p className="text-xs text-red-500 mt-1">{errors.id_client}</p>
+            )}
+          </div>
           {/* Rol */}
           <div>
             <select
