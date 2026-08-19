@@ -1,0 +1,311 @@
+import { useEffect, useState } from 'react';
+
+import type {
+  UserDetail,
+  Role,
+  Client,
+  CreateUserPayload,
+  UpdateUserPayload,
+} from '../types/user.types';
+
+interface Props {
+  user: UserDetail | null;
+  clients: Client[];
+  roles: Role[];
+  onSubmit: (data: CreateUserPayload | UpdateUserPayload) => Promise<void>;
+  onClose: () => void;
+}
+
+export const UserFormModal = ({
+  user,
+  clients,
+  roles,
+  onSubmit,
+  onClose,
+}: Props) => {
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    id_role: 0,
+    id_client: '',
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [serverError, setServerError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // <- Estado de carga para el botón
+
+  useEffect(() => {
+    setForm({
+      name: user?.name ?? '',
+      email: user?.email ?? '',
+      password: '',
+      id_role: user?.id_role ?? 0,
+      id_client: user?.id_client ?? '',
+    });
+
+    setErrors({});
+    setServerError('');
+  }, [user]);
+
+  const isUUID = (value: string): boolean => {
+    return /^[0-9a-fA-F-]{36}$/.test(value);
+  };
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!form.name) {
+      newErrors.name = 'El nombre es obligatorio';
+    } else if (form.name.trim().length < 5) {
+      newErrors.name = 'Debe tener al menos 5 caracteres';
+    }
+
+    if (!form.email) {
+      newErrors.email = 'El email es obligatorio';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.email = 'Correo inválido (ej: usuario@email.com)';
+    }
+
+    if (!user) {
+      if (!form.password) {
+        newErrors.password = 'La contraseña es obligatoria';
+      } else if (form.password.length < 8) {
+        newErrors.password = 'Mínimo 8 caracteres';
+      } else if (!/[A-Z]/.test(form.password)) {
+        newErrors.password = 'Debe tener al menos 1 mayúscula';
+      } else if (!/[0-9]/.test(form.password)) {
+        newErrors.password = 'Debe tener al menos 1 número';
+      }
+    }
+
+    if (!form.id_role || form.id_role === 0) {
+      newErrors.id_role = 'Selecciona un rol válido';
+    }
+
+    if (!form.id_client && !isUUID(form.id_client)) {
+      newErrors.id_client = 'Cliente inválido';
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setErrors({});
+    setServerError('');
+
+    if (!validate()) return;
+
+    setIsSubmitting(true);
+
+    try {
+      if (user) {
+        const payload: UpdateUserPayload = {
+          name: form.name,
+          email: form.email,
+          id_role: form.id_role,
+          id_client: form.id_client || undefined,
+        };
+
+        await onSubmit(payload);
+      } else {
+        const payload: CreateUserPayload = {
+          name: form.name,
+          email: form.email,
+          password: form.password,
+          id_role: form.id_role,
+          ...(form.id_client ? { id_client: form.id_client } : {}),
+        };
+
+        await onSubmit(payload);
+      }
+
+      onClose();
+    } catch (error: any) {
+      const errorData = error?.response?.data || error;
+
+      if (errorData?.detail?.field) {
+        const { field, message } = errorData.detail;
+
+        setErrors((prev) => ({
+          ...prev,
+          [field]: message,
+        }));
+
+        setServerError('');
+      } else {
+        setServerError(
+          errorData?.message ||
+            errorData?.detail ||
+            'Error al guardar el usuario',
+        );
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+        {/* HEADER */}
+        <div className="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-800">
+              {user ? 'Editar usuario' : 'Crear usuario'}
+            </h2>
+
+            <p className="text-sm text-gray-400 mt-1">
+              {user
+                ? 'Actualiza la información del usuario'
+                : 'Registra un nuevo usuario'}
+            </p>
+          </div>
+
+          <button
+            onClick={onClose}
+            disabled={isSubmitting}
+            className="text-gray-400 hover:text-gray-600 text-xl disabled:opacity-50"
+          >
+            ×
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+          {/* ERROR GLOBAL */}
+          {serverError && (
+            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-2 rounded-lg">
+              {serverError}
+            </div>
+          )}
+
+          {/* Nombre */}
+          <div>
+            <input
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              placeholder="Nombre completo"
+              disabled={isSubmitting}
+              className={`w-full px-4 py-2.5 rounded-xl border text-sm disabled:bg-gray-50
+                ${errors.name ? 'border-red-400' : 'border-gray-200'}`}
+            />
+            {errors.name && (
+              <p className="text-xs text-red-500 mt-1">{errors.name}</p>
+            )}
+          </div>
+
+          {/* Email */}
+          <div>
+            <input
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              placeholder="Correo electrónico"
+              disabled={isSubmitting}
+              className={`w-full px-4 py-2.5 rounded-xl border text-sm disabled:bg-gray-50
+                ${errors.email ? 'border-red-400' : 'border-gray-200'}`}
+            />
+            {errors.email && (
+              <p className="text-xs text-red-500 mt-1">{errors.email}</p>
+            )}
+          </div>
+
+          {/* Password */}
+          {!user && (
+            <div>
+              <input
+                type="password"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                placeholder="Contraseña"
+                disabled={isSubmitting}
+                className={`w-full px-4 py-2.5 rounded-xl border text-sm disabled:bg-gray-50
+                  ${errors.password ? 'border-red-400' : 'border-gray-200'}`}
+              />
+              {errors.password && (
+                <p className="text-xs text-red-500 mt-1">{errors.password}</p>
+              )}
+            </div>
+          )}
+
+          {/* Cliente */}
+          <div>
+            <select
+              value={form.id_client}
+              onChange={(e) => setForm({ ...form, id_client: e.target.value })}
+              disabled={isSubmitting}
+              className={`w-full px-3 py-2.5 rounded-xl border text-sm disabled:bg-gray-50
+                ${errors.id_client ? 'border-red-400' : 'border-gray-200'}`}
+            >
+              <option value="">Seleccionar cliente</option>
+              {clients.map((c) => (
+                <option key={c.id_client} value={c.id_client}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            {errors.id_client && (
+              <p className="text-xs text-red-500 mt-1">{errors.id_client}</p>
+            )}
+          </div>
+          {/* Rol */}
+          <div>
+            <select
+              value={form.id_role}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  id_role: Number(e.target.value),
+                })
+              }
+              disabled={isSubmitting}
+              className={`w-full px-3 py-2.5 rounded-xl border text-sm disabled:bg-gray-50
+                ${errors.id_role ? 'border-red-400' : 'border-gray-200'}`}
+            >
+              <option value={0}>Seleccionar rol</option>
+              {roles.map((r) => (
+                <option key={r.id_role} value={r.id_role}>
+                  {r.name}
+                </option>
+              ))}
+            </select>
+
+            {errors.id_role && (
+              <p className="text-xs text-red-500 mt-1">{errors.id_role}</p>
+            )}
+          </div>
+
+          {/* FOOTER */}
+          <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-2">
+            <button
+              type="button"
+              data-testid="cancel-button"
+              onClick={onClose}
+              disabled={isSubmitting}
+              className="px-3 py-2 rounded-xl text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-all disabled:opacity-50 cursor-pointer"
+            >
+              Cancelar
+            </button>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="px-3 py-2 rounded-xl text-sm font-semibold text-white bg-green-600 hover:bg-green-700 shadow-lg shadow-green-600/25 transition-all flex items-center justify-center min-w-32.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            >
+              {isSubmitting ? (
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin inline-block"></span>
+              ) : user ? (
+                'Guardar cambios'
+              ) : (
+                'Crear usuario'
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
