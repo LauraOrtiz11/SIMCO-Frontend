@@ -9,6 +9,7 @@ import type {
 
 export const getUsers = async (
   clientId?: string,
+  search?: string,
   page: number = 1,
   limit: number = 5,
 ): Promise<{ items: UserListItem[]; total: number }> => {
@@ -17,6 +18,7 @@ export const getUsers = async (
   const { data } = await api.get('/users/', {
     params: {
       ...(clientId ? { client_id: clientId } : {}),
+      ...(search ? { search } : {}),
       limit,
       offset,
     },
@@ -33,7 +35,6 @@ export const getUsers = async (
 
 export const getUserById = async (id: string): Promise<UserDetail> => {
   const { data } = await api.get<UserDetail>(`/users/${id}`);
-
   return data;
 };
 
@@ -41,15 +42,12 @@ export const createUser = async (payload: CreateUserPayload) => {
   const cleaned = Object.fromEntries(
     Object.entries(payload).filter(([_, v]) => v !== '' && v !== undefined),
   );
-
   const { data } = await api.post('/users/', cleaned);
-
   return data;
 };
 
 export const updateUser = async (id: string, payload: UpdateUserPayload) => {
   const { data } = await api.put(`/users/${id}`, payload);
-
   return data;
 };
 
