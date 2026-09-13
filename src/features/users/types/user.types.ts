@@ -13,9 +13,9 @@ export interface UserDetail {
   email: string;
   id_role: number;
   role: string;
-  id_client: string;
-  client: string;
   status: string;
+  client_id?: string | null;
+  greenhouse_ids: string[];
 }
 
 export interface Role {
@@ -31,14 +31,14 @@ export interface Client {
 export interface CreateUserPayload {
   name: string;
   email: string;
-  password: string;
+  password?: string;
   id_role: number;
-  id_client?: string;
+  greenhouse_ids: string[];
 }
 
 export interface UpdateUserPayload {
   name?: string;
   email?: string;
   id_role?: number;
-  id_client?: string;
+  greenhouse_ids?: string[];
 }

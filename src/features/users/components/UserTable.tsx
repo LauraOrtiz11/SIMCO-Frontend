@@ -4,12 +4,13 @@ import type { UserListItem } from '../types/user.types';
 interface Props {
   users: UserListItem[];
   loading: boolean;
-  onEdit: (user: UserListItem) => void;
+  onEdit: (user: UserListItem) => Promise<void>;
   onToggle: (id: string) => Promise<void>;
 }
 
 export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
-  const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [loadingToggleId, setLoadingToggleId] = useState<string | null>(null);
+  const [loadingEditId, setLoadingEditId] = useState<string | null>(null);
 
   if (loading) {
     return (
@@ -48,32 +49,27 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
               return (
                 <tr
                   key={user.id_user}
-                  className="border-b  border-green-800 last:border-none hover:bg-gray-100/50 transition"
+                  className="border-b border-green-800 last:border-none hover:bg-gray-100/50 transition"
                 >
-                  {/* Usuario */}
                   <td className="px-6 py-2.5">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-green-600 flex items-center justify-center text-white font-semibold">
                         {user.name.charAt(0).toUpperCase()}
                       </div>
-
                       <div>
                         <p className="font-medium text-gray-800">{user.name}</p>
                       </div>
                     </div>
                   </td>
 
-                  {/* Email */}
                   <td className="px-6 py-2.5 text-gray-600">{user.email}</td>
 
-                  {/* Rol */}
                   <td className="px-3 py-2.5">
                     <span className="px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-700">
                       {user.role}
                     </span>
                   </td>
 
-                  {/* Estado */}
                   <td className="px-6 py-2.5">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-medium ${
@@ -86,43 +82,59 @@ export const UserTable = ({ users, loading, onEdit, onToggle }: Props) => {
                     </span>
                   </td>
 
-                  {/* Acciones */}
                   <td className="px-6 py-2.5">
                     <div className="flex flex-col gap-2 items-center">
-                      {/* Editar */}
-                      <button
-                        onClick={() => onEdit(user)}
-                        className="px-3 py-1 rounded-lg text-sm text-blue-600 bg-blue-50 hover:bg-blue-100 transition"
-                      >
-                        Editar
-                      </button>
-
-                      {/* Toggle */}
+                      {/* Botón Editar corregido con manejo de carga */}
                       <button
                         onClick={async () => {
-                          if (loadingId) return;
+                          if (loadingEditId) return;
+                          setLoadingEditId(user.id_user);
+                          try {
+                            await onEdit(user);
+                          } catch (error) {
+                            console.error(
+                              'Error al cargar detalles de edición:',
+                              error,
+                            );
+                          } finally {
+                            setLoadingEditId(null);
+                          }
+                        }}
+                        disabled={loadingEditId === user.id_user}
+                        className="px-3 py-1 rounded-lg text-sm text-blue-600 bg-blue-50 hover:bg-blue-100 transition flex items-center justify-center min-w-20 cursor-pointer disabled:opacity-50"
+                      >
+                        {loadingEditId === user.id_user ? (
+                          <span className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin inline-block"></span>
+                        ) : (
+                          'Editar'
+                        )}
+                      </button>
 
-                          setLoadingId(user.id_user);
+                      {/* Botón Toggle */}
+                      <button
+                        onClick={async () => {
+                          if (loadingToggleId) return;
+                          setLoadingToggleId(user.id_user);
                           try {
                             await onToggle(user.id_user);
                           } catch (error) {
                             console.error(error);
                           } finally {
-                            setLoadingId(null);
+                            setLoadingToggleId(null);
                           }
                         }}
-                        disabled={loadingId === user.id_user}
+                        disabled={loadingToggleId === user.id_user}
                         className={`px-3 py-1 rounded-lg text-sm transition ${
                           isActive
                             ? 'text-red-600 bg-red-50 hover:bg-red-100'
                             : 'text-green-600 bg-green-50 hover:bg-green-100'
                         } ${
-                          loadingId === user.id_user
+                          loadingToggleId === user.id_user
                             ? 'opacity-50 cursor-not-allowed'
                             : ''
                         }`}
                       >
-                        {loadingId === user.id_user ? (
+                        {loadingToggleId === user.id_user ? (
                           <span className="w-4 h-3 border-2 border-current border-t-transparent rounded-full animate-spin inline-block"></span>
                         ) : isActive ? (
                           'Desactivar'
