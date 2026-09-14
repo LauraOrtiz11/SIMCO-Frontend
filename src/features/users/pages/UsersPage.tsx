@@ -99,14 +99,18 @@ export const UsersPage = () => {
   };
 
   const handleSubmit = async (data: CreateUserPayload | UpdateUserPayload) => {
-    if (selectedUser) {
-      await updateUser(selectedUser.id_user, data);
-      loadUsers();
-    } else {
-      await createUser(data as CreateUserPayload);
-      loadUsers();
+    try {
+      if (selectedUser) {
+        await updateUser(selectedUser.id_user, data);
+      } else {
+        await createUser(data as CreateUserPayload);
+      }
+
+      await loadUsers();
+      closeModal();
+    } catch (error) {
+      throw error;
     }
-    closeModal();
   };
 
   return (
