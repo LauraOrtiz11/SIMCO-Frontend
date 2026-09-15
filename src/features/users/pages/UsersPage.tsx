@@ -140,14 +140,18 @@ export const UsersPage = () => {
               setClientFilter(e.target.value);
               setPage(1);
             }}
-            className="w-full sm:w-auto px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl shadow-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400/20"
+            className="w-full sm:w-auto px-4 py-2.5 text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-xl shadow-sm cursor-pointer outline-none focus:ring-2 focus:ring-gray-400/20"
           >
             <option value="">Todos los clientes</option>
-            {clients.map((c) => (
-              <option key={c.id_client} value={c.id_client}>
-                {c.name}
-              </option>
-            ))}
+
+            {clients.map((c: any) => {
+              const clientId = c.id_client || c.id;
+              return (
+                <option key={clientId} value={clientId}>
+                  {c.name}
+                </option>
+              );
+            })}
           </select>
         </div>
 

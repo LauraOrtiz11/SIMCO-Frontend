@@ -6,18 +6,31 @@ interface Props {
 
 export const UserFilter = ({ clients, value, onChange }: Props) => {
   return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="border p-2 rounded"
-    >
-      <option value="">Todos</option>
+    <div className="relative w-full sm:w-auto">
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="
+          w-full sm:w-64
+          px-4 py-2.5
+          text-sm font-medium
+          text-gray-800 bg-white
+          border border-gray-200 rounded-xl
+          shadow-sm outline-none cursor-pointer
+          focus:ring-2 focus:ring-gray-400/20
+        "
+      >
+        <option value="">Todos los clientes</option>
 
-      {clients.map((c) => (
-        <option key={c.id_client} value={c.id_client}>
-          {c.name}
-        </option>
-      ))}
-    </select>
+        {clients.map((c) => {
+          const id = c.id_client || c.id;
+          return (
+            <option key={id} value={id}>
+              {c.name}
+            </option>
+          );
+        })}
+      </select>
+    </div>
   );
 };
