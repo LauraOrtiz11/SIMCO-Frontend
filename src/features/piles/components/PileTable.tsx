@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import type { PileListItem } from '../types/pile.types';
 
-interface Props {
+interface PileTableProps {
   piles: PileListItem[];
   loading: boolean;
   onViewTelemetry: (pile: PileListItem) => void;
   onAssignDevice: (pile: PileListItem) => void;
+  onEdit: (pile: PileListItem) => Promise<void> | void;
 }
 
 export const PileTable = ({
@@ -12,11 +14,14 @@ export const PileTable = ({
   loading,
   onViewTelemetry,
   onAssignDevice,
-}: Props) => {
+  onEdit,
+}: PileTableProps) => {
+  const [loadingEditId, setLoadingEditId] = useState<string | null>(null);
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl border border-gray-100 shadow-xs">
-        <div className="w-8 h-8 border-4 border-gray-200 border-t-green-600 rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-gray-200 border-t-amber-600 rounded-full animate-spin" />
         <p className="mt-4 text-sm font-medium text-gray-500">
           Cargando pilas de compostaje...
         </p>
@@ -27,33 +32,12 @@ export const PileTable = ({
   if (!piles.length) {
     return (
       <div className="flex flex-col items-center justify-center py-16 px-6 text-center bg-white rounded-2xl border border-gray-100 shadow-xs">
-        <div className="flex items-center justify-center w-14 h-14 mb-4 rounded-2xl bg-green-50">
-          <svg
-            className="w-7 h-7 text-green-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.8}
-              d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L5.6 15.12a1 1 0 00-1.2 1.04l.322 3.22A2 2 0 006.71 21.2h10.58a2 2 0 001.988-1.82l.322-3.22a1 1 0 00-.172-.732z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.8}
-              d="M12 3v9m0 0l-3-3m3 3l3-3"
-            />
-          </svg>
-        </div>
-        <h3 className="text-base font-semibold text-gray-800">
+        <h3 className="text-sm font-semibold text-gray-700">
           No hay pilas registradas
         </h3>
-        <p className="max-w-sm mt-1 text-sm text-gray-500">
-          Este invernadero aún no tiene camas o pilas de compostaje
-          configuradas.
+        <p className="max-w-sm mt-1 text-sm text-gray-400">
+          No se encontraron pilas de compostaje para el invernadero
+          seleccionado.
         </p>
       </div>
     );
@@ -62,20 +46,20 @@ export const PileTable = ({
   return (
     <div className="bg-white rounded-2xl shadow-xs border border-gray-100 overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-left border-collapse min-w-[600px]">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50/80">
               <th className="px-6 py-3.5 text-xs font-semibold tracking-wide text-gray-500 uppercase">
-                Pila / Código
-              </th>
-              <th className="px-6 py-3.5 text-xs font-semibold tracking-wide text-gray-500 uppercase">
-                Fecha de Inicio
-              </th>
-              <th className="px-6 py-3.5 text-xs font-semibold tracking-wide text-gray-500 uppercase">
-                Dispositivo IoT
+                Código / Alias
               </th>
               <th className="px-6 py-3.5 text-xs font-semibold tracking-wide text-gray-500 uppercase">
                 Estado
+              </th>
+              <th className="px-6 py-3.5 text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                Nodo IoT
+              </th>
+              <th className="px-6 py-3.5 text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                Fecha Inicio
               </th>
               <th className="px-6 py-3.5 text-xs font-semibold tracking-wide text-gray-500 uppercase text-center">
                 Acciones
@@ -84,7 +68,8 @@ export const PileTable = ({
           </thead>
           <tbody className="divide-y divide-gray-100">
             {piles.map((pile) => {
-              const isActive = pile.status === 'Activa';
+              const isEditingThis = loadingEditId === pile.id_pile;
+
               return (
                 <tr
                   key={pile.id_pile}
@@ -92,21 +77,39 @@ export const PileTable = ({
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-green-600 flex items-center justify-center text-white font-semibold shrink-0">
+                      <div className="w-9 h-9 rounded-full bg-amber-500 flex items-center justify-center text-white font-semibold shrink-0 shadow-xs">
                         {pile.code.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-gray-900 font-mono">
                           {pile.code}
                         </p>
                         <p className="text-xs text-gray-500">
-                          {pile.name || 'Sin alias configurado'}
+                          {pile.name || 'Sin alias'}
                         </p>
                       </div>
                     </div>
                   </td>
 
-                  <td className="px-6 py-4 text-sm text-gray-600">
+                  <td className="px-6 py-4">
+                    <span className="px-2.5 py-1 text-xs font-medium rounded-lg bg-green-50 text-green-700 border border-green-200/60">
+                      {pile.status || 'Activa'}
+                    </span>
+                  </td>
+
+                  <td className="px-6 py-4">
+                    {pile.assigned_device_code ? (
+                      <span className="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded-md border border-blue-200">
+                        {pile.assigned_device_code}
+                      </span>
+                    ) : (
+                      <span className="text-xs italic text-gray-400">
+                        Sin asignación
+                      </span>
+                    )}
+                  </td>
+
+                  <td className="px-6 py-4 text-xs text-gray-500">
                     {new Date(pile.process_start_date).toLocaleDateString(
                       'es-CO',
                       {
@@ -118,50 +121,41 @@ export const PileTable = ({
                   </td>
 
                   <td className="px-6 py-4">
-                    {pile.assigned_device_code ? (
-                      <span className="inline-flex items-center px-2.5 py-1 text-xs font-medium text-blue-700 bg-blue-50 border border-blue-200/60 rounded-lg">
-                        <span className="w-1.5 h-1.5 mr-1.5 rounded-full bg-blue-500 animate-pulse" />
-                        {pile.assigned_device_code}
-                      </span>
-                    ) : (
-                      <span className="text-xs italic text-gray-400">
-                        Sin dispositivo asignado
-                      </span>
-                    )}
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full ${
-                        isActive
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-gray-100 text-gray-600'
-                      }`}
-                    >
-                      <span
-                        className={`w-1.5 h-1.5 mr-1.5 rounded-full ${
-                          isActive ? 'bg-green-600' : 'bg-gray-400'
-                        }`}
-                      />
-                      {pile.status}
-                    </span>
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <div className="flex justify-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => onAssignDevice(pile)}
-                        className="px-3 py-1.5 text-xs font-medium text-amber-600 bg-amber-50 hover:bg-amber-100 rounded-lg transition cursor-pointer"
-                      >
-                        Nodo IoT
-                      </button>
+                    <div className="flex flex-col gap-2 items-center">
                       <button
                         type="button"
                         onClick={() => onViewTelemetry(pile)}
-                        className="px-3 py-1.5 text-xs font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-lg transition cursor-pointer"
+                        className="w-28 px-3 py-1.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-lg transition cursor-pointer"
                       >
-                        Gráficos en Vivo
+                        Telemetría
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => onAssignDevice(pile)}
+                        className="w-28 px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition cursor-pointer"
+                      >
+                        Nodo IoT
+                      </button>
+
+                      <button
+                        type="button"
+                        disabled={isEditingThis}
+                        onClick={async () => {
+                          try {
+                            setLoadingEditId(pile.id_pile);
+                            await onEdit(pile);
+                          } finally {
+                            setLoadingEditId(null);
+                          }
+                        }}
+                        className="w-28 px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition cursor-pointer disabled:opacity-50 flex justify-center items-center"
+                      >
+                        {isEditingThis ? (
+                          <span className="w-3.5 h-3.5 border-2 border-gray-600 border-t-transparent rounded-full animate-spin inline-block" />
+                        ) : (
+                          'Editar'
+                        )}
                       </button>
                     </div>
                   </td>
