@@ -92,7 +92,7 @@ export const GreenhouseModal = ({
                 })
               }
               placeholder="Ej. Invernadero 1"
-              className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
+              className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-lime-600 focus:ring-2 focus:ring-lime-100"
             />
           </div>
 
@@ -117,11 +117,10 @@ export const GreenhouseModal = ({
                 })
               }
               placeholder="Ej. Finca Mancilla"
-              className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
+              className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-lime-600 focus:ring-2 focus:ring-lime-100"
             />
           </div>
 
-          {/* Coordenadas */}
           {/* Coordenadas */}
           <div>
             <p className="mb-2 text-sm font-medium text-gray-700">
@@ -154,7 +153,7 @@ export const GreenhouseModal = ({
                     }
                   }}
                   placeholder="4.8097"
-                  className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-lime-600 focus:ring-2 focus:ring-lime-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
               </div>
 
@@ -183,7 +182,7 @@ export const GreenhouseModal = ({
                     }
                   }}
                   placeholder="-74.3542"
-                  className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-lime-600 focus:ring-2 focus:ring-lime-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
               </div>
             </div>
@@ -203,7 +202,7 @@ export const GreenhouseModal = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center justify-center min-w-24 px-4 py-2.5 text-sm font-semibold text-white bg-green-600 rounded-xl transition hover:bg-green-700 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center min-w-24 px-4 py-2.5 text-sm font-semibold text-white bg-lime-600 rounded-xl transition hover:bg-lime-700 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <>

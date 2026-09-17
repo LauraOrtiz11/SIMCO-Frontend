@@ -8,7 +8,7 @@ import type {
 
 export const getGreenhouses = async (
   clientId?: string,
-  limit = 50,
+  limit = 5,
   offset = 0,
 ): Promise<{ items: GreenhouseListItem[]; total: number }> => {
   const { data } = await api.get('/greenhouses/', {
