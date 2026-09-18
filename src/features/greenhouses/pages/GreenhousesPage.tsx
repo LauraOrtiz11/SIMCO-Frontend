@@ -164,9 +164,9 @@ export const GreenhousesPage = () => {
           <button
             type="button"
             onClick={handleOpenCreate}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-lime-600 rounded-2xl shadow-xs hover:bg-lime-700 cursor-pointer transition-transform duration-300 hover:scale-105"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-lime-600 rounded-2xl shadow-xs hover:bg-lime-700 cursor-pointer transition-transform duration-300 hover:scale-105"
           >
-            <span className="text-lg leading-none">+</span> Crear invernadero
+            <span className="text- leading-none">+</span> Crear invernadero
           </button>
         )}
       </div>

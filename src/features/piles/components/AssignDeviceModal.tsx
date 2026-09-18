@@ -58,7 +58,7 @@ export const AssignDeviceModal = ({
         <div className="flex justify-between items-center pb-3 border-b border-gray-100">
           <h3 className="text-base font-bold text-gray-800">
             Nodo IoT Asignado a:{' '}
-            <span className="text-green-600">{pile.code}</span>
+            <span className="text-lime-600">{pile.code}</span>
           </h3>
           <button
             onClick={onClose}
@@ -76,14 +76,14 @@ export const AssignDeviceModal = ({
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-gray-600 uppercase mb-1">
-                Selecciona un Nodo ESP32
+                Selecciona un dispositivo ESP32
               </label>
               <select
                 value={selectedDeviceCode}
                 onChange={(e) => setSelectedDeviceCode(e.target.value)}
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500/20 font-mono"
+                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-lime-500/20 font-mono"
               >
-                <option value="">-- Sin dispositivo (Desvincular) --</option>
+                <option value=""> Sin dispositivo (Desvincular) </option>
                 {availableDevices.map((dev) => (
                   <option key={dev.id_device} value={dev.code}>
                     {dev.code} {dev.description ? `(${dev.description})` : ''}{' '}
@@ -94,8 +94,8 @@ export const AssignDeviceModal = ({
                   </option>
                 ))}
               </select>
-              <p className="mt-1 text-[11px] text-gray-400">
-                Seleccionar un nodo asignado a otra pila lo moverá
+              <p className="mt-1 text-[12px] text-gray-400">
+                Seleccionar un dispositivo asignado a otra pila lo moverá
                 automáticamente a esta cama de compostaje.
               </p>
             </div>
@@ -111,7 +111,7 @@ export const AssignDeviceModal = ({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-4 py-2 bg-amber-600 text-white rounded-xl text-xs font-semibold cursor-pointer hover:bg-amber-700 disabled:opacity-50"
+                className="px-4 py-2 bg-lime-600 text-white rounded-xl text-xs font-semibold cursor-pointer hover:bg-lime-700 disabled:opacity-50"
               >
                 {isSubmitting ? 'Guardando...' : 'Actualizar Asignación'}
               </button>

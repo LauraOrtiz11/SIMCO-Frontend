@@ -36,20 +36,21 @@ export const ClientSelector = ({
             text-gray-800
             bg-white
             border
-            border-gray-200
+            border-lime-200
             rounded-xl
             shadow-sm
             outline-none
             transition-all
             duration-200
             cursor-pointer
-            hover:border-gray-300
-            focus:border-green-600
-            focus:ring-2
-            focus:ring-green-100
+            focus:ring-lime-100
           "
         >
-          <option value="" disabled className="text-gray-400">
+          <option
+            value=""
+            disabled
+            className="text-gray-400 border rounded-2xl"
+          >
             Selecciona un cliente...
           </option>
 
@@ -57,7 +58,7 @@ export const ClientSelector = ({
             <option
               key={client.id}
               value={client.id}
-              className="text-gray-800 py-1"
+              className=" py-1 text-black"
             >
               {client.name}
             </option>

@@ -162,7 +162,7 @@ export const PileFormModal = ({
                   placeholder="Ej. PILA-001"
                   value={code}
                   onChange={(e) => setCode(e.target.value.toUpperCase())}
-                  className="w-full px-3.5 py-2.5 text-sm uppercase text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-amber-600 focus:ring-2 focus:ring-amber-100 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
+                  className="w-full px-3.5 py-2.5 text-sm uppercase text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-lime-600 focus:ring-2 focus:ring-lime-100 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
                 />
               </div>
 
@@ -176,7 +176,7 @@ export const PileFormModal = ({
                   placeholder="Ej. Pila Lote 1"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-amber-600 focus:ring-2 focus:ring-amber-100 disabled:bg-gray-50"
+                  className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-lime-600 focus:ring-2 focus:ring-lime-100 disabled:bg-gray-50"
                 />
               </div>
             </div>
@@ -192,7 +192,7 @@ export const PileFormModal = ({
                   disabled={isSubmitting}
                   value={processStartDate}
                   onChange={(e) => setProcessStartDate(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-amber-600 focus:ring-2 focus:ring-amber-100 disabled:bg-gray-50"
+                  className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-lime-600 focus:ring-2 focus:ring-lime-100 disabled:bg-gray-50"
                 />
               </div>
 
@@ -205,7 +205,7 @@ export const PileFormModal = ({
                   disabled={isSubmitting}
                   value={estimatedEndDate}
                   onChange={(e) => setEstimatedEndDate(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-amber-600 focus:ring-2 focus:ring-amber-100 disabled:bg-gray-50"
+                  className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-lime-600 focus:ring-2 focus:ring-lime-100 disabled:bg-gray-50"
                 />
               </div>
             </div>
@@ -219,7 +219,7 @@ export const PileFormModal = ({
                   disabled={isSubmitting}
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-amber-600 focus:ring-2 focus:ring-amber-100 disabled:bg-gray-50 cursor-pointer"
+                  className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-lime-600 focus:ring-2 focus:ring-lime-100 disabled:bg-gray-50 cursor-pointer"
                 >
                   <option value="Activa">Activa</option>
                   <option value="Finalizada">Finalizada</option>
@@ -238,7 +238,7 @@ export const PileFormModal = ({
                 placeholder="Ej. Residuos orgánicos, hojarasca"
                 value={baseMaterial}
                 onChange={(e) => setBaseMaterial(e.target.value)}
-                className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-amber-600 focus:ring-2 focus:ring-amber-100 disabled:bg-gray-50"
+                className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-lime-600 focus:ring-2 focus:ring-lime-100 disabled:bg-gray-50"
               />
             </div>
 
@@ -252,7 +252,7 @@ export const PileFormModal = ({
                 placeholder="Notas de seguimiento técnico..."
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-amber-600 focus:ring-2 focus:ring-amber-100 disabled:bg-gray-50"
+                className="w-full px-3.5 py-2.5 text-sm text-gray-800 border border-gray-200 rounded-xl outline-none transition focus:border-lime-600 focus:ring-2 focus:ring-lime-100 disabled:bg-gray-50"
               />
             </div>
           </form>
@@ -272,7 +272,7 @@ export const PileFormModal = ({
             type="submit"
             form="pile-form"
             disabled={isSubmitting}
-            className="inline-flex items-center justify-center min-w-28 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-amber-600 hover:bg-amber-700 shadow-md shadow-amber-600/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="inline-flex items-center justify-center min-w-28 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-lime-600 hover:bg-lime-700 shadow-md shadow-lime-600/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {isSubmitting ? (
               <>

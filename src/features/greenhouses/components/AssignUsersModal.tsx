@@ -134,7 +134,7 @@ export const AssignUsersModal = ({
                       type="checkbox"
                       checked={selectedUsers.has(user.id_user)}
                       onChange={() => handleToggle(user.id_user)}
-                      className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 cursor-pointer"
+                      className="w-4 h-4 text-lime-600 bg-gray-100 border-gray-300 rounded focus:ring-lime-500 cursor-pointer"
                     />
                     <div className="ml-3">
                       <p className="text-sm font-medium text-gray-900">
@@ -167,7 +167,7 @@ export const AssignUsersModal = ({
               onSave(greenhouse.id_greenhouse, Array.from(selectedUsers))
             }
             disabled={isSubmitting}
-            className="px-4 py-2.5 text-sm font-semibold text-white bg-green-600 rounded-xl hover:bg-green-700 disabled:opacity-60 cursor-pointer flex items-center justify-center min-w-28"
+            className="px-4 py-2.5 text-sm font-semibold text-white bg-lime-600 rounded-xl hover:bg-lime-700 disabled:opacity-60 cursor-pointer flex items-center justify-center min-w-28"
           >
             {isSubmitting ? (
               <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin inline-block"></span>
