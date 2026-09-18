@@ -17,10 +17,18 @@ export const api = axios.create({
 // ==============================
 
 api.interceptors.request.use(
-  (config) => {
-    return config;
-  },
-  (error) => Promise.reject(error),
+    (config) => {
+        // 1. Buscamos el token guardado
+        const token = localStorage.getItem('token');
+
+        // 2. Si hay token, lo inyectamos
+        if (token && config.headers) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        return config;
+    },
+    (error) => Promise.reject(error),
 );
 
 //  Response (manejo global de errores)
