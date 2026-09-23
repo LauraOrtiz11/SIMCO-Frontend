@@ -57,7 +57,7 @@ export function LoginForm() {
 
                         {/* TÍTULO PRINCIPAL */}
                         <div className="space-y-1">
-                            <h2 className="text-3xl font-bold tracking-wide text-green-900 uppercase drop-shadow-sm">
+                            <h2 className="text-3xl font-bold tracking-wide text-lime-700 uppercase drop-shadow-sm">
                                 Inicia Sesión en SIMCO
                             </h2>
                             <p className="text-base tracking-wide text-black/60 mt-1">
@@ -131,7 +131,7 @@ export function LoginForm() {
                             {/* BOTÓN LOGIN */}
                             <button
                                 type="submit"
-                                className="w-full h-12 rounded-full bg-green-700 text-sm font-bold tracking-widest text-white uppercase shadow-md transition-all duration-300 hover:bg-green-800 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] cursor-pointer mt-2"
+                                className="w-full h-12 rounded-full bg-lime-700 text-sm font-bold tracking-widest text-white uppercase shadow-md transition-all duration-300 hover:bg-lime-700 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] cursor-pointer mt-2"
                             >
                                 Iniciar
                             </button>
