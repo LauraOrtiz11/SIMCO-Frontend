@@ -100,7 +100,7 @@ export const ClientFormModal = ({
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="+57 300 123 4567"
-              className="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500/20 focus:outline-none"
+              className="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-lime-500/20 focus:outline-none"
             />
           </div>
 
@@ -115,7 +115,7 @@ export const ClientFormModal = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-xl shadow-sm transition disabled:opacity-50 cursor-pointer"
+              className="px-4 py-2 text-sm font-medium text-white bg-lime-600 hover:bg-lime-700 rounded-xl shadow-sm transition disabled:opacity-50 cursor-pointer"
             >
               {isSubmitting ? 'Guardando...' : client ? 'Actualizar' : 'Crear'}
             </button>

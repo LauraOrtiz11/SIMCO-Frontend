@@ -53,63 +53,110 @@ export const ClientsPage = () => {
 
   return (
     <div className="p-6 space-y-6">
-      <div className="pb-4 mt-2 border-b border-gray-200">
-        <h1 className="text-xl font-semibold text-gray-800 font-[Poppins]">
-          Gestión de Clientes
+      {/* Encabezado Centrado */}
+      <div className="flex flex-col items-center text-center pb-4 border-b border-gray-200">
+        <h1 className="text-2xl font-semibold text-gray-800 font-[Poppins]">
+          GESTIÓN DE CLIENTES
         </h1>
+        <p className="text-sm text-gray-500 mt-1">
+          Administración de organizaciones y clientes registrados en el sistema
+        </p>
       </div>
 
+      {/* Buscador y Botón Nuevo Cliente */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <input
-          type="text"
-          placeholder="Buscar por nombre, correo o teléfono..."
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1);
-          }}
-          className="w-full sm:w-80 px-4 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500/20"
-        />
+        <div className="w-full sm:w-auto flex-1 max-w-md">
+          <input
+            type="text"
+            placeholder="Buscar por nombre, correo o teléfono..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
+            className="w-full px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-2xl shadow-xs outline-none transition-all duration-200 focus:border-lime-600 focus:ring-2 focus:ring-lime-100"
+          />
+        </div>
 
         <button
+          type="button"
           onClick={handleOpenCreate}
-          className="w-full sm:w-auto px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium shadow-sm transition rounded-xl cursor-pointer"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-lime-600 rounded-2xl shadow-xs hover:bg-lime-700 cursor-pointer transition-transform duration-300 hover:scale-105"
         >
-          + Nuevo Cliente
+          + Crear cliente
         </button>
       </div>
 
+      {/* Tabla de Clientes */}
       <ClientTable
         clients={clients}
         isLoading={isLoading}
         onEdit={handleOpenEdit}
       />
 
-      {/* Paginación */}
-      {totalPages > 1 && (
-        <div className="flex justify-between items-center pt-2 text-sm text-gray-600">
-          <span>
-            Mostrando página {page} de {totalPages} ({total} clientes en total)
-          </span>
-          <div className="flex gap-2">
-            <button
-              disabled={page === 1}
-              onClick={() => setPage((prev) => prev - 1)}
-              className="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-40 cursor-pointer"
+      {/* BARRA DE PAGINACIÓN ESTANDARIZADA */}
+      <div className="flex items-center justify-between px-4 py-3 sm:px-6 mt-4 rounded-xl bg-white border border-gray-100 shadow-xs">
+        {/* Vista Móvil */}
+        <div className="flex flex-1 justify-between sm:hidden">
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.max(p - 1, 1))}
+            disabled={page === 1}
+            className="relative inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-40 cursor-pointer"
+          >
+            Anterior
+          </button>
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+            disabled={page === totalPages || totalPages === 0}
+            className="relative ml-3 inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-40 cursor-pointer"
+          >
+            Siguiente
+          </button>
+        </div>
+
+        {/* Vista Escritorio */}
+        <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs text-gray-500">
+              Página <span className="font-semibold">{page}</span> de{' '}
+              <span className="font-semibold">{totalPages || 1}</span>
+            </p>
+          </div>
+
+          <div>
+            <nav
+              className="isolate inline-flex -space-x-px rounded-xl shadow-xs"
+              aria-label="Pagination"
             >
-              Anterior
-            </button>
-            <button
-              disabled={page === totalPages}
-              onClick={() => setPage((prev) => prev + 1)}
-              className="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-40 cursor-pointer"
-            >
-              Siguiente
-            </button>
+              <button
+                type="button"
+                onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                disabled={page === 1}
+                className="relative inline-flex items-center rounded-l-xl px-3 py-2 text-xs text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
+              >
+                Anterior
+              </button>
+
+              <span className="relative inline-flex items-center px-4 py-2 text-xs font-mono text-gray-600 ring-1 ring-inset ring-gray-200 bg-gray-50">
+                {page}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+                disabled={page === totalPages || totalPages === 0}
+                className="relative inline-flex items-center rounded-r-xl px-3 py-2 text-xs text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
+              >
+                Siguiente
+              </button>
+            </nav>
           </div>
         </div>
-      )}
+      </div>
 
+      {/* Modal de Formulario */}
       <ClientFormModal
         isOpen={isOpen}
         client={selectedClient}
