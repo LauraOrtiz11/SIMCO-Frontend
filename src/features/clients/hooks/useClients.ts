@@ -10,7 +10,7 @@ export const useClients = () => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const limit = 10;
+  const limit = 5;
 
   const clientsQuery = useQuery({
     queryKey: ['clients', search, page],
