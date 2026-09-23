@@ -5,10 +5,12 @@ import ClientsPage from '@/features/clients/pages/ClientsPage';
 import PilesPage from '@/features/piles/pages/PilesPage';
 import { DevicesPage } from '@/features/devices/pages/DevicesPage';
 import { SensorsPage } from '@/features/sensors/pages/SensorsPage';
+import { LoginForm } from './features/auth/components/LoginForm';
 
 function App() {
   return (
     <Routes>
+      <Route path="/login" element={<LoginForm />} />
       <Route path="/" element={<Navigate to="/users" />} />
       <Route path="/users" element={<UsersPage />} />
       <Route path="/greenhouses" element={<GreenhousesPage />} />
