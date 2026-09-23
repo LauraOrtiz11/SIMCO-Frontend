@@ -67,8 +67,8 @@ export const PilesPage = () => {
           PILAS DE COMPOSTAJE
         </h1>
         <p className="mt-1 text-sm text-gray-500 max-w-lg mx-auto">
-          Monitoreo, control de parámetros y administración de camas de
-          compostaje en tiempo real.
+          Administrar pilas de compostaje en tiempo real y asignar dispostivos
+          ESP32.
         </p>
       </div>
       {/* Filtros y Botón "+ Nueva Pila"  */}

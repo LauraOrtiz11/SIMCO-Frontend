@@ -82,7 +82,7 @@ export const PileTable = ({
                         {pile.code.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900 font-mono">
+                        <p className="font-medium text-gray-900 font-mono">
                           {pile.code}
                         </p>
                         <p className="text-xs text-gray-500">
@@ -157,7 +157,7 @@ export const PileTable = ({
                             setLoadingEditId(null);
                           }
                         }}
-                        className="w-25 px-3 py-1.5 text-xs font-medium text-green-700 bg-green-100 hover:bg-green-200 rounded-2xl cursor-pointer disabled:opacity-50 flex justify-center items-center border border-green-200 transition-transform duration-300 hover:scale-105"
+                        className="w-25 px-3 py-1.5 text-xs font-medium text-lime-700 bg-lime-100 hover:bg-lime-200 rounded-2xl cursor-pointer disabled:opacity-50 flex justify-center items-center border border-lime-200 transition-transform duration-300 hover:scale-105"
                       >
                         {isEditingThis ? (
                           <span className="w-3.5 h-3.5 border-2 border-gray-600 border-t-transparent rounded-full animate-spin inline-block" />

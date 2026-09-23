@@ -57,7 +57,7 @@ export const AssignDeviceModal = ({
       <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
         <div className="flex justify-between items-center pb-3 border-b border-gray-100">
           <h3 className="text-base font-bold text-gray-800">
-            Nodo IoT Asignado a:{' '}
+            Dispositivo IoT Asignado a:{' '}
             <span className="text-lime-600">{pile.code}</span>
           </h3>
           <button
