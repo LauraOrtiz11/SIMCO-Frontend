@@ -374,7 +374,7 @@ export const UserFormModal = ({
                 {/* Loading */}
                 {isLoadingGreenhouses && (
                   <div className="flex items-center justify-center gap-2 py-4 text-gray-500 text-xs italic">
-                    <span className="w-4 h-4 border-2 border-green-600 border-t-transparent rounded-full animate-spin inline-block" />
+                    <span className="w-4 h-4 border-2 border-lime-600 border-t-transparent rounded-full animate-spin inline-block" />
                     Cargando invernaderos...
                   </div>
                 )}
@@ -404,7 +404,7 @@ export const UserFormModal = ({
                           onChange={() =>
                             toggleGreenhouse(greenhouse.id_greenhouse)
                           }
-                          className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500 cursor-pointer"
+                          className="w-4 h-4 rounded border-gray-300 text-lime-600 focus:ring-lime-500 cursor-pointer"
                         />
 
                         <span className="text-gray-700">{greenhouse.name}</span>
@@ -415,7 +415,7 @@ export const UserFormModal = ({
 
                 {/* Cantidad seleccionada */}
                 {!isLoadingGreenhouses && greenhouseIds.length > 0 && (
-                  <p className="text-xs text-green-600 font-medium">
+                  <p className="text-xs text-lime-600 font-medium">
                     {greenhouseIds.length} invernadero(s) seleccionado(s).
                   </p>
                 )}
@@ -439,7 +439,7 @@ export const UserFormModal = ({
             type="submit"
             form="user-form"
             disabled={isSubmitting}
-            className="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-green-600 hover:bg-green-700 shadow-lg shadow-green-600/25 transition-all flex items-center justify-center min-w-32 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-lime-600 hover:bg-lime-700 shadow-lg shadow-green-600/25 transition-all flex items-center justify-center min-w-32 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {isSubmitting ? (
               <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin inline-block" />

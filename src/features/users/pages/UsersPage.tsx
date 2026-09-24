@@ -87,7 +87,7 @@ export const UsersPage = () => {
     try {
       const detail = await getUserById(user.id_user);
       setSelectedUser(detail);
-      setOpen(true); // Abre el modal únicamente cuando el detalle ya está listo
+      setOpen(true);
     } catch (error) {
       console.error('No se pudo obtener el detalle del usuario', error);
     }
@@ -115,54 +115,72 @@ export const UsersPage = () => {
 
   return (
     <div className="p-6 space-y-6">
-      <div className="pb-4 mt-2 border-b border-gray-300 ">
-        <h1 className="mb-2 text-xl justify-center font-semibold text-gray-800 font-[Poppins]">
-          Gestión de Usuarios
+      {/* Encabezado Centrado */}
+      <div className="flex flex-col items-center text-center pb-4 border-b border-gray-200">
+        <h1 className="text-2xl font-semibold text-gray-800 font-[Poppins]">
+          GESTIÓN DE USUARIOS
         </h1>
+        <p className="text-sm text-gray-500 mt-1">
+          Administración de cuentas, asignación de roles
+        </p>
       </div>
 
-      <div className="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+      {/* Filtros, Búsqueda y Botón Nuevo */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto flex-1 max-w-2xl">
+          {/* Campo de Búsqueda */}
           <input
             type="text"
-            placeholder="Buscar por nombre..."
+            placeholder="Buscar por nombre o correo..."
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
               setPage(1);
             }}
-            className="w-full sm:w-64 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400/20"
+            className="w-full sm:w-64 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-2xl shadow-xs outline-none transition-all duration-200 focus:border-lime-600 focus:ring-2 focus:ring-lime-100"
           />
 
+          {/* Desplegable de Clientes */}
           <select
             value={clientFilter}
             onChange={(e) => {
               setClientFilter(e.target.value);
               setPage(1);
             }}
-            className="w-full sm:w-auto px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl shadow-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400/20"
+            className="w-full sm:w-64 px-4 py-2.5 text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-2xl shadow-sm cursor-pointer outline-none transition-all duration-200 focus:border-lime-600 focus:ring-2 focus:ring-lime-100"
           >
-            <option value="">Todos los clientes</option>
-            {clients.map((c) => (
-              <option key={c.id_client} value={c.id_client}>
-                {c.name}
-              </option>
-            ))}
+            <option value="" className="text-gray-800 bg-white">
+              Todos los clientes
+            </option>
+            {clients.map((c: any) => {
+              const clientId = c.id_client || c.id;
+              return (
+                <option
+                  key={clientId}
+                  value={clientId}
+                  className="text-gray-800 bg-white"
+                >
+                  {c.name}
+                </option>
+              );
+            })}
           </select>
         </div>
 
+        {/* Botón Crear Usuario */}
         <button
+          type="button"
           onClick={() => {
             setSelectedUser(null);
             setOpen(true);
           }}
-          className="w-full sm:w-auto px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium shadow-sm transition-all duration-200 rounded-xl cursor-pointer flex items-center justify-center"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-lime-600 rounded-2xl shadow-xs hover:bg-lime-700 cursor-pointer transition-transform duration-300 hover:scale-105"
         >
-          + Crear Usuario
+          + Crear usuario
         </button>
       </div>
 
-      {/* TABLA */}
+      {/* Tabla de Usuarios */}
       <UserTable
         users={users}
         loading={loading}
@@ -170,50 +188,60 @@ export const UsersPage = () => {
         onToggle={handleToggle}
       />
 
-      {/* PAGINACIÓN RESTAURADA */}
-      <div className="flex items-center justify-between px-4 py-3 sm:px-6 mt-4 rounded-xl">
+      {/* BARRA DE PAGINACIÓN */}
+      <div className="flex items-center justify-between px-4 py-3 sm:px-6 mt-4 rounded-xl bg-white border border-gray-100 shadow-xs">
+        {/* Vista Móvil */}
         <div className="flex flex-1 justify-between sm:hidden">
           <button
+            type="button"
             onClick={() => setPage((p) => Math.max(p - 1, 1))}
             disabled={page === 1}
-            className="relative inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-40"
+            className="relative inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-40 cursor-pointer"
           >
             Anterior
           </button>
           <button
+            type="button"
             onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
             disabled={page === totalPages || totalPages === 0}
-            className="relative ml-3 inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-40"
+            className="relative ml-3 inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-40 cursor-pointer"
           >
             Siguiente
           </button>
         </div>
 
+        {/* Vista Escritorio */}
         <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm text-gray-500">
-              Página {page} de {totalPages || 1}
+            <p className="text-xs text-gray-500">
+              Página <span className="font-semibold">{page}</span> de{' '}
+              <span className="font-semibold">{totalPages || 1}</span>
             </p>
           </div>
+
           <div>
             <nav
               className="isolate inline-flex -space-x-px rounded-xl shadow-xs"
               aria-label="Pagination"
             >
               <button
+                type="button"
                 onClick={() => setPage((p) => Math.max(p - 1, 1))}
                 disabled={page === 1}
-                className="relative inline-flex items-center rounded-l-xl px-3 py-2 text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
+                className="relative inline-flex items-center rounded-l-xl px-3 py-2 text-xs text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
               >
                 Anterior
               </button>
-              <span className="relative inline-flex items-center px-4 py-2 text-sm font-mono text-gray-600 ring-1 ring-inset ring-gray-200 bg-gray-50">
+
+              <span className="relative inline-flex items-center px-4 py-2 text-xs font-mono text-gray-600 ring-1 ring-inset ring-gray-200 bg-gray-50">
                 {page}
               </span>
+
               <button
+                type="button"
                 onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
                 disabled={page === totalPages || totalPages === 0}
-                className="relative inline-flex items-center rounded-r-xl px-3 py-2 text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
+                className="relative inline-flex items-center rounded-r-xl px-3 py-2 text-xs text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-100 disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
               >
                 Siguiente
               </button>
@@ -222,7 +250,7 @@ export const UsersPage = () => {
         </div>
       </div>
 
-      {/* MODAL */}
+      {/* Modal Formulario */}
       {open && (
         <UserFormModal
           user={selectedUser}

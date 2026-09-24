@@ -1,30 +1,37 @@
-import type { ClientBasic } from '../types/greenhouse.types';
-
-interface ClientSelectorProps {
-  clients: ClientBasic[];
-  value: string;
-  onChange: (clientId: string) => void;
+export interface DeviceBasic {
+  id_device: string;
+  code: string;
+  description?: string;
 }
 
-export const ClientSelector = ({
-  clients,
+interface DeviceSelectorProps {
+  devices: DeviceBasic[];
+  value: string;
+  onChange: (deviceId: string) => void;
+  loading?: boolean;
+}
+
+export const DeviceSelector = ({
+  devices,
   value,
   onChange,
-}: ClientSelectorProps) => {
+  loading = false,
+}: DeviceSelectorProps) => {
   return (
     <div className="w-full sm:w-80">
       <label
-        htmlFor="client-selector"
+        htmlFor="device-selector"
         className="block mb-1.5 text-xs font-semibold tracking-wider text-gray-500 uppercase"
       >
-        Cliente
+        Dispositivo / Nodo IoT
       </label>
 
       <div className="relative">
         <select
-          id="client-selector"
+          id="device-selector"
           value={value}
-          onChange={(event) => onChange(event.target.value)}
+          disabled={loading}
+          onChange={(e) => onChange(e.target.value)}
           className="
             w-full
             appearance-none
@@ -36,35 +43,35 @@ export const ClientSelector = ({
             text-gray-800
             bg-white
             border
-            border-lime-200
+            border-gray-200
             rounded-xl
-            shadow-sm
+            shadow-xs
             outline-none
             transition-all
             duration-200
             cursor-pointer
-            focus:ring-lime-100
+            hover:border-gray-300
+            focus:border-amber-600
+            focus:ring-2
+            focus:ring-amber-100
+            disabled:bg-gray-50
+            disabled:cursor-not-allowed
           "
         >
-          <option
-            value=""
-            disabled
-            className="text-gray-400 border rounded-2xl"
-          >
-            Selecciona un cliente...
+          <option value="">
+            {loading
+              ? 'Cargando dispositivos...'
+              : 'Selecciona un dispositivo IoT...'}
           </option>
 
-          {clients.map((client) => (
-            <option
-              key={client.id}
-              value={client.id}
-              className=" py-1 text-black"
-            >
-              {client.name}
+          {devices.map((dev) => (
+            <option key={dev.id_device} value={dev.id_device} className="py-1">
+              {dev.code} {dev.description ? `- ${dev.description}` : ''}
             </option>
           ))}
         </select>
 
+        {/* Flecha personalizada */}
         <div className="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-gray-400">
           <svg
             className="w-4 h-4"
